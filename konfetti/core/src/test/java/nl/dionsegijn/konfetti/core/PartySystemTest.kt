@@ -27,14 +27,14 @@ class PartySystemTest {
         Assert.assertTrue(system.enabled)
         Assert.assertFalse(system.isDoneEmitting())
 
-        val r1 = system.render(deltaTimeMs, rect) // render 2, total deltaTime = 0.017f
-        Assert.assertEquals(0, r1.size) // Expected 0, Every 0.025ms a new particle should be created
+        val r1 = system.render(deltaTimeMs, rect) // render 2, total deltaTime = 17f
+        Assert.assertEquals(0, r1.size) // Expected 0, Every 25ms a new particle should be created
 
-        val r2 = system.render(deltaTimeMs, rect) // render 2, total deltaTime = 2 * 0.017f = 0.034f
-        Assert.assertEquals(1, r2.size) // Expected 1, one for every 0.025ms
+        val r2 = system.render(deltaTimeMs, rect) // render 2, total deltaTime = 2 * 17f = 34f
+        Assert.assertEquals(1, r2.size) // Expected 1, one for every 25ms
 
-        val r3 = system.render(deltaTimeMs, rect) // render 3, total deltaTime = 3 * 0.017f = 0.051f
-        Assert.assertEquals(2, r3.size) // expected 2, one for every 0.025ms
+        val r3 = system.render(deltaTimeMs, rect) // render 3, total deltaTime = 3 * 17f = 51f
+        Assert.assertEquals(2, r3.size) // expected 2, one for every 25ms
     }
 
     @Test
@@ -62,11 +62,11 @@ class PartySystemTest {
         Assert.assertTrue(system.enabled)
         Assert.assertFalse(system.isDoneEmitting())
 
-        val r1 = system.render(deltaTimeMs, rect) // render 2, total deltaTime = 0.017f
-        Assert.assertEquals(0, r1.size) // Expected 0, Every 0.025ms a new particle should be created
+        val r1 = system.render(deltaTimeMs, rect) // render 2, total deltaTime = 17f
+        Assert.assertEquals(0, r1.size) // Expected 0, Every 25ms a new particle should be created
 
-        val r2 = system.render(deltaTimeMs, rect) // render 2, total deltaTime = 2 * 0.017f = 0.034f
-        Assert.assertEquals(1, r2.size) // Expected 1, one for every 0.025ms
+        val r2 = system.render(deltaTimeMs, rect) // render 2, total deltaTime = 2 * 17f = 34f
+        Assert.assertEquals(1, r2.size) // Expected 1, one for every 25ms
 
         // System set to false, emitter will no longer asked for new particles
         system.enabled = false
@@ -90,16 +90,16 @@ class PartySystemTest {
         Mockito.`when`(rect.height()).thenReturn(1)
         Assert.assertTrue(system.enabled)
 
-        system.render(deltaTimeMs, rect) // dt: 0.017f
-        system.render(deltaTimeMs, rect) // dt: 0.034f
-        system.render(deltaTimeMs, rect) // dt: 0.051f
-        system.render(deltaTimeMs, rect) // dt: 0.068f
-        system.render(deltaTimeMs, rect) // dt: 0.085f
+        system.render(deltaTimeMs, rect) // dt: 17f
+        system.render(deltaTimeMs, rect) // dt: 34f
+        system.render(deltaTimeMs, rect) // dt: 51f
+        system.render(deltaTimeMs, rect) // dt: 68f
+        system.render(deltaTimeMs, rect) // dt: 85f
 
         // should still run because emitter isn't done yet, total delta time is < 100ms
         Assert.assertFalse(system.isDoneEmitting())
 
-        system.render(deltaTimeMs, rect) // dt: 0.102f // duration is higher than 100ms
+        system.render(deltaTimeMs, rect) // dt: 102f // duration is higher than 100ms
 
         Assert.assertEquals(0, system.getActiveParticleAmount())
         Assert.assertTrue(system.isDoneEmitting())
@@ -116,17 +116,17 @@ class PartySystemTest {
 
         // Every 20ms a new particle is created and every two frames they're removed
 
-        system.render(deltaTimeMs, rect) // dt: 0.017f
-        system.render(deltaTimeMs, rect) // dt: 0.034f
+        system.render(deltaTimeMs, rect) // dt: 17f
+        system.render(deltaTimeMs, rect) // dt: 34f
         Assert.assertEquals(1, system.getActiveParticleAmount())
 
-        system.render(deltaTimeMs, rect) // dt: 0.051f
-        system.render(deltaTimeMs, rect) // dt: 0.068f
-        system.render(deltaTimeMs, rect) // dt: 0.085f
-        system.render(deltaTimeMs, rect) // dt: 0.102f
+        system.render(deltaTimeMs, rect) // dt: 51f
+        system.render(deltaTimeMs, rect) // dt: 68f
+        system.render(deltaTimeMs, rect) // dt: 85f
+        system.render(deltaTimeMs, rect) // dt: 102f
 
         // All particles are created and one extra frame is executed to remove the last one
-        system.render(deltaTimeMs, rect) // dt: 0.119f
+        system.render(deltaTimeMs, rect) // dt: 119f
         Assert.assertEquals(0, system.getActiveParticleAmount())
     }
 }

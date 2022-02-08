@@ -52,23 +52,23 @@ class PartyEmitterTest {
         )
         val emitter = PartyEmitter(party.emitter, 1f)
 
-        val r1 = emitter.createConfetti(deltaTime, party, drawArea) // 0.017f
+        val r1 = emitter.createConfetti(deltaTime, party, drawArea) // 17f
         Assert.assertEquals(0, r1.size)
 
-        val r2 = emitter.createConfetti(deltaTime, party, drawArea) // 0.034f
+        val r2 = emitter.createConfetti(deltaTime, party, drawArea) // 34f
         Assert.assertEquals(1, r2.size)
 
-        val r3 = emitter.createConfetti(deltaTime, party, drawArea) // 0.051f
+        val r3 = emitter.createConfetti(deltaTime, party, drawArea) // 51f
         Assert.assertEquals(1, r3.size)
 
-        val r4 = emitter.createConfetti(deltaTime, party, drawArea) // 0.068f
+        val r4 = emitter.createConfetti(deltaTime, party, drawArea) // 68f
         Assert.assertEquals(0, r4.size)
 
-        val r5 = emitter.createConfetti(deltaTime, party, drawArea) // 0.085f
+        val r5 = emitter.createConfetti(deltaTime, party, drawArea) // 85f
         Assert.assertEquals(1, r5.size)
         Assert.assertFalse(emitter.isFinished())
 
-        val r6 = emitter.createConfetti(deltaTime, party, drawArea) // 0.102f
+        val r6 = emitter.createConfetti(deltaTime, party, drawArea) // 102f
         Assert.assertEquals(1, r6.size)
         Assert.assertTrue(emitter.isFinished())
     }
@@ -77,7 +77,7 @@ class PartyEmitterTest {
     fun `Create confetti and check its initial state`() {
         val emitter = PartyEmitter(party.emitter, 1f, Random(1L))
 
-        val r1 = emitter.createConfetti(deltaTime, party, drawArea) // 0.017f
+        val r1 = emitter.createConfetti(deltaTime, party, drawArea) // 17f
         with(r1.first()) {
             Assert.assertEquals(Vector(100f, 100f), location)
             Assert.assertEquals(6f, width)
@@ -97,7 +97,7 @@ class PartyEmitterTest {
             deltaTime,
             party.copy(rotation = Rotation.disabled()),
             drawArea
-        ) // 0.017f
+        ) // 17f
 
         with(r1.first()) {
             Assert.assertEquals(0.0f, rotationSpeed2D)
@@ -113,7 +113,7 @@ class PartyEmitterTest {
             deltaTime,
             party.copy(position = Position.Relative(0.5, 0.5)),
             drawArea
-        ) // 0.017f
+        ) // 17f
 
         with(r1.first()) {
             Assert.assertEquals(Vector(500f, 500f), location)
