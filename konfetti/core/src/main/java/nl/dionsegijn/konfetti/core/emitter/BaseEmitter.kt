@@ -14,7 +14,7 @@ abstract class BaseEmitter {
      * Keep this function as light as possible otherwise you'll slow down the render system
      */
     abstract fun createConfetti(
-        deltaTime: Float,
+        deltaTimeMs: Float,
         party: Party,
         drawArea: Rect,
     ): List<Confetti>

@@ -15,7 +15,7 @@ class Confetti(
     val width: Float, // sizeInPx
     private val mass: Float,
     val shape: Shape,
-    var lifespan: Long = -1L,
+    var lifespanMs: Float = -1f,
     val fadeOut: Boolean = true,
     private var acceleration: Vector = Vector(0f, 0f),
     var velocity: Vector = Vector(),
@@ -29,7 +29,7 @@ class Confetti(
     private var rotationWidth = width
 
     // Expected frame rate
-    private var speedF = 60f
+    private var speedF = 60f / 1000
     private var gravity = Vector(0f, 0.02f)
 
     var alpha: Int = 255
@@ -54,12 +54,12 @@ class Confetti(
         acceleration.addScaled(force, 1f / mass)
     }
 
-    fun render(deltaTime: Float, drawArea: Rect) {
+    fun render(deltaTimeMs: Float, drawArea: Rect) {
         applyForce(gravity)
-        update(deltaTime, drawArea)
+        update(deltaTimeMs, drawArea)
     }
 
-    private fun update(deltaTime: Float, drawArea: Rect) {
+    private fun update(deltaTimeMs: Float, drawArea: Rect) {
         if (location.y > drawArea.height()) {
             alpha = 0
             return
@@ -68,18 +68,18 @@ class Confetti(
         velocity.add(acceleration)
         velocity.mult(damping)
 
-        location.addScaled(velocity, deltaTime * speedF * pixelDensity)
+        location.addScaled(velocity, deltaTimeMs * speedF * pixelDensity)
 
-        lifespan -= (deltaTime * 1000).toLong()
-        if (lifespan <= 0) updateAlpha(deltaTime)
+        lifespanMs -= deltaTimeMs
+        if (lifespanMs <= 0) updateAlpha(deltaTimeMs)
 
         // 2D rotation around the center of the confetti
-        rotation += rotationSpeed2D * deltaTime * speedF
+        rotation += rotationSpeed2D * deltaTimeMs * speedF
         if (rotation >= 360) rotation = 0f
 
         // 3D rotation effect by decreasing the width and make sure that rotationSpeed is always
         // positive by using abs
-        rotationWidth -= abs(rotationSpeed3D) * deltaTime * speedF
+        rotationWidth -= abs(rotationSpeed3D) * deltaTimeMs * speedF
         if (rotationWidth < 0) rotationWidth = width
 
         scaleX = abs(rotationWidth / width - 0.5f) * 2
@@ -88,9 +88,9 @@ class Confetti(
         drawParticle = drawArea.contains(location.x.toInt(), location.y.toInt())
     }
 
-    private fun updateAlpha(deltaTime: Float) {
+    private fun updateAlpha(deltaTimeMs: Float) {
         alpha = if (fadeOut) {
-            val interval = 5 * deltaTime * speedF
+            val interval = 5 * deltaTimeMs * speedF
             (alpha - interval.toInt()).coerceAtLeast(0)
         } else {
             0

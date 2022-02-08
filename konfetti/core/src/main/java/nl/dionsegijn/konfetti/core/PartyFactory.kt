@@ -92,7 +92,7 @@ class PartyFactory(val emitter: EmitterConfig) {
         return this
     }
 
-    fun timeToLive(timeToLive: Long): PartyFactory {
+    fun timeToLive(timeToLive: Float): PartyFactory {
         party = party.copy(timeToLive = timeToLive)
         return this
     }

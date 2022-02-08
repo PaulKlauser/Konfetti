@@ -19,7 +19,7 @@ class Presets {
                 angle = Angle.TOP,
                 spread = 45,
                 size = listOf(Size.SMALL, Size.LARGE),
-                timeToLive = 3000L,
+                timeToLive = 3000f,
                 rotation = Rotation(),
                 colors = listOf(0xfce18a, 0xff726d, 0xf4306d, 0xb48def),
                 emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(30),

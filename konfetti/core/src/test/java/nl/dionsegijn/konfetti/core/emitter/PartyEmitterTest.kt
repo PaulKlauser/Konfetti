@@ -25,7 +25,7 @@ class PartyEmitterTest {
     }
 
     // Average time between for each frame
-    private val deltaTime = 0.017f
+    private val deltaTime = 17f
 
     // Test Party object
     private val party = Party(
@@ -37,7 +37,7 @@ class PartyEmitterTest {
         size = listOf(Size(sizeInDp = 6, mass = 5f, massVariance = 0f)),
         colors = listOf(Color.RED),
         shapes = listOf(Shape.Square),
-        timeToLive = 1000L,
+        timeToLive = 1000f,
         fadeOutEnabled = false,
         position = Position.Absolute(100f, 100f),
         delay = 0,
@@ -82,7 +82,7 @@ class PartyEmitterTest {
             Assert.assertEquals(Vector(100f, 100f), location)
             Assert.assertEquals(6f, width)
             Assert.assertEquals(Shape.Square, shape)
-            Assert.assertEquals(1000L, lifespan)
+            Assert.assertEquals(1000f, lifespanMs)
             Assert.assertEquals(0.9f, damping)
             Assert.assertEquals(5.6617184f, rotationSpeed2D)
             Assert.assertEquals(0.804353f, rotationSpeed3D)

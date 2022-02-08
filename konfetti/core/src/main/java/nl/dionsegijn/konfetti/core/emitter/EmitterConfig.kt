@@ -29,21 +29,21 @@ class EmitterConfig(
 ) {
 
     /** Max time allowed to emit in milliseconds */
-    var emittingTime: Long = 0
+    var emittingTimeMs: Float = 0f
 
     /** Amount of time needed for each particle creation in milliseconds */
-    var amountPerMs: Float = 0f
+    var msPerConfetti: Float = 0f
 
     init {
         val (duration, timeUnit) = emitter
-        this.emittingTime = TimeUnit.MILLISECONDS.convert(duration, timeUnit)
+        this.emittingTimeMs = TimeUnit.MILLISECONDS.convert(duration, timeUnit).toFloat()
     }
 
     /**
      * Amount of particles created over the duration that is set
      */
     fun max(amount: Int): EmitterConfig {
-        this.amountPerMs = (emittingTime / amount) / 1000f
+        this.msPerConfetti = emittingTimeMs / amount
         return this
     }
 
@@ -51,7 +51,7 @@ class EmitterConfig(
      * Amount of particles that will be created per second
      */
     fun perSecond(amount: Int): EmitterConfig {
-        this.amountPerMs = 1f / amount
+        this.msPerConfetti = 1000f / amount
         return this
     }
 }

@@ -27,12 +27,12 @@ class PartySystem(
 
     // Called every frame to create and update the particles state
     // returns a list of particles that are ready to be rendered
-    fun render(deltaTime: Float, drawArea: Rect): List<Particle> {
+    fun render(deltaTimeMs: Float, drawArea: Rect): List<Particle> {
         if (enabled) {
-            activeParticles.addAll(emitter.createConfetti(deltaTime, party, drawArea))
+            activeParticles.addAll(emitter.createConfetti(deltaTimeMs, party, drawArea))
         }
 
-        activeParticles.forEach { it.render(deltaTime, drawArea) }
+        activeParticles.forEach { it.render(deltaTimeMs, drawArea) }
 
         activeParticles.removeAll { it.isDead() }
 

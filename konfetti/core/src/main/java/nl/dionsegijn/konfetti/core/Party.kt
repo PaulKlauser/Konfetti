@@ -47,7 +47,7 @@ data class Party(
     val size: List<Size> = listOf(Size.SMALL, Size.MEDIUM, Size.LARGE),
     val colors: List<Int> = listOf(0xfce18a, 0xff726d, 0xf4306d, 0xb48def),
     val shapes: List<Shape> = listOf(Shape.Square, Shape.Circle),
-    val timeToLive: Long = 2000,
+    val timeToLive: Float = 2000f,
     val fadeOutEnabled: Boolean = true,
     val position: Position = Position.Relative(0.5, 0.5),
     val delay: Int = 0,

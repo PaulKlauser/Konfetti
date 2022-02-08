@@ -27,7 +27,7 @@ class PartyEmitter(
     private var particlesCreated = 0
 
     /** Elapsed time in milliseconds */
-    private var elapsedTime: Float = 0f
+    private var elapsedTimeMs: Float = 0f
 
     /** Amount of time elapsed since last particle creation in milliseconds */
     private var createParticleMs: Float = 0f
@@ -36,30 +36,30 @@ class PartyEmitter(
      * If timer isn't started yet, set initial start time
      * Create the first confetti immediately and update the last emitting time
      */
-    override fun createConfetti(deltaTime: Float, party: Party, drawArea: Rect): List<Confetti> {
-        createParticleMs += deltaTime
+    override fun createConfetti(deltaTimeMs: Float, party: Party, drawArea: Rect): List<Confetti> {
+        createParticleMs += deltaTimeMs
 
         // Initial deltaTime can't be higher than the emittingTime, if so calculate
         // amount of particles based on max emittingTime
-        val emittingTime = emitterConfig.emittingTime / 1000f
-        if (elapsedTime == 0f && deltaTime > emittingTime) {
-            createParticleMs = emittingTime
+        val emittingTimeMs = emitterConfig.emittingTimeMs
+        if (elapsedTimeMs == 0f && deltaTimeMs > emittingTimeMs) {
+            createParticleMs = emittingTimeMs
         }
 
         var particles = listOf<Confetti>()
 
         // Check if particle should be created
-        if (createParticleMs >= emitterConfig.amountPerMs && !isTimeElapsed()) {
+        if (createParticleMs >= emitterConfig.msPerConfetti && !isTimeElapsed()) {
             // Calculate how many particle  to create in the elapsed time
-            val amount: Int = (createParticleMs / emitterConfig.amountPerMs).toInt()
+            val amount: Int = (createParticleMs / emitterConfig.msPerConfetti).toInt()
 
             particles = (1..amount).map { createParticle(party, drawArea) }
 
             // Reset timer and add left over time for next cycle
-            createParticleMs %= emitterConfig.amountPerMs
+            createParticleMs %= emitterConfig.msPerConfetti
         }
 
-        elapsedTime += deltaTime * 1000
+        elapsedTimeMs += deltaTimeMs
         return particles
     }
 
@@ -78,7 +78,7 @@ class PartyEmitter(
                 mass = randomSize.massWithVariance(),
                 shape = getRandomShape(party.shapes),
                 color = colors[random.nextInt(colors.size)],
-                lifespan = timeToLive,
+                lifespanMs = timeToLive,
                 fadeOut = fadeOutEnabled,
                 velocity = getVelocity(),
                 damping = party.damping,
@@ -166,18 +166,18 @@ class PartyEmitter(
 
     /**
      * If the [duration] is 0 it's not set and not relevant
-     * If the emitting time is set check if [elapsedTime] exceeded the emittingTime
+     * If the emitting time is set check if [elapsedTimeMs] exceeded the emittingTime
      */
     private fun isTimeElapsed(): Boolean {
-        return when (emitterConfig.emittingTime) {
-            0L -> false
-            else -> elapsedTime >= emitterConfig.emittingTime
+        return when (emitterConfig.emittingTimeMs) {
+            0f -> false
+            else -> elapsedTimeMs >= emitterConfig.emittingTimeMs
         }
     }
 
     override fun isFinished(): Boolean {
-        return if (emitterConfig.emittingTime > 0L) {
-            elapsedTime >= emitterConfig.emittingTime
+        return if (emitterConfig.emittingTimeMs > 0L) {
+            elapsedTimeMs >= emitterConfig.emittingTimeMs
         } else false
     }
 }

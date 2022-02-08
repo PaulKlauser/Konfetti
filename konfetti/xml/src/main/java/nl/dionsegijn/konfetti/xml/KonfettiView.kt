@@ -51,13 +51,13 @@ open class KonfettiView : View {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        val deltaTime = timer.getDeltaTime()
+        val deltaTimeMs = timer.getDeltaTimeMs()
         for (i in systems.size - 1 downTo 0) {
             val partySystem = systems[i]
 
-            val totalTimeRunning = timer.getTotalTimeRunning(partySystem.createdAt)
+            val totalTimeRunning = timer.getTotalTimeRunningMs(partySystem.createdAt)
             if (totalTimeRunning >= partySystem.party.delay) {
-                partySystem.render(deltaTime, drawArea).forEach {
+                partySystem.render(deltaTimeMs, drawArea).forEach {
                     it.display(canvas)
                 }
             }
@@ -150,22 +150,22 @@ open class KonfettiView : View {
      * Delta time is used to draw the confetti correctly if any frame drops occur.
      */
     class TimerIntegration {
-        private var previousTime: Long = -1L
+        private var previousTimeNano: Long = -1L
 
         fun reset() {
-            previousTime = -1L
+            previousTimeNano = -1L
         }
 
-        fun getDeltaTime(): Float {
-            if (previousTime == -1L) previousTime = System.nanoTime()
+        fun getDeltaTimeMs(): Float {
+            if (previousTimeNano == -1L) previousTimeNano = System.nanoTime()
 
-            val currentTime = System.nanoTime()
-            val dt = (currentTime - previousTime) / 1000000f
-            previousTime = currentTime
-            return dt / 1000
+            val currentTimeNano = System.nanoTime()
+            val dtMilli = (currentTimeNano - previousTimeNano) / 1000000f
+            previousTimeNano = currentTimeNano
+            return dtMilli
         }
 
-        fun getTotalTimeRunning(startTime: Long): Long {
+        fun getTotalTimeRunningMs(startTime: Long): Long {
             val currentTime = System.currentTimeMillis()
             return (currentTime - startTime)
         }
